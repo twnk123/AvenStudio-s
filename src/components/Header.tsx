@@ -16,6 +16,7 @@ const navLinks = [
 const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuCollapsed, setIsMenuCollapsed] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -53,9 +54,42 @@ const Header: React.FC = () => {
       </div>
 
       {/* Desktop Side Menu - Right */}
-      <div className="hidden lg:block fixed right-0 z-50" style={{ top: '50%', transform: 'translateY(-50%)', width: 'auto' }}>
+      <motion.div
+        className="hidden lg:block fixed right-0 z-50"
+        style={{ top: '50%', width: 'auto' }}
+        animate={{
+          x: isMenuCollapsed ? '100px' : 0,
+          y: '-50%'
+        }}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      >
+        {/* Toggle Button */}
+        <button
+          onClick={() => setIsMenuCollapsed(!isMenuCollapsed)}
+          className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full w-10 h-10 rounded-full flex items-center justify-center bg-white/80 backdrop-blur-md border shadow-md hover:bg-white transition-colors z-10"
+          style={{ borderColor: 'rgba(245, 87, 51, 0.5)' }}
+          aria-label={isMenuCollapsed ? 'Expand menu' : 'Collapse menu'}
+        >
+          <motion.svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="none"
+            animate={{ rotate: isMenuCollapsed ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <path
+              d="M12 4L6 10L12 16"
+              stroke="rgb(245, 87, 51)"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </motion.svg>
+        </button>
+
         {/* Teardrop Background */}
-        <div 
+        <div
           className="absolute bg-white/80 backdrop-blur-md"
           style={{
             top: 'calc(-10vh)',
@@ -84,7 +118,7 @@ const Header: React.FC = () => {
             </NavLink>
           ))}
         </nav>
-      </div>
+      </motion.div>
 
       {/* Mobile Menu Button */}
       <button
@@ -137,6 +171,19 @@ const Header: React.FC = () => {
             transition={{ duration: 0.3 }}
             className="lg:hidden fixed top-0 right-0 bottom-0 w-64 bg-white/90 backdrop-blur-md z-40 pt-20 px-6 shadow-xl"
           >
+            {/* Close Button */}
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center rounded-full bg-white border-2 hover:bg-gray-100 transition-colors shadow-md z-50"
+              style={{ borderColor: 'rgb(245, 87, 51)' }}
+              aria-label="Close menu"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgb(245, 87, 51)" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+
             <nav className="flex flex-col space-y-6">
               {navLinks.map(link => (
                 <NavLink

@@ -37,6 +37,15 @@ page.html
 # CDN directories
 cdn-cgi/
 
+# Temporary/utility scripts
+check-video.js
+compress-video.js
+visual-verify.cjs
+
+# Large PNG files (temporary/test files)
+/*.png
+!public/*.png
+
 # Logs
 logs/
 *.log
